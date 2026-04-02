@@ -24,7 +24,7 @@ public class Pedido {
     @Column(name = "nome", nullable = false, length = 100)
     private String nome;
 
-    @Column(unique = true, nullable = false, length = 11)
+    @Column(nullable = false, length = 11)
     private String cpf;
 
     private LocalDate data;
@@ -36,7 +36,7 @@ public class Pedido {
     private BigDecimal valorTotal;
 
     //Relacionamento entre tabelas
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemDoPedido> itens = new ArrayList<>();
 
     public void calcularValorTotalDoPedido() {
