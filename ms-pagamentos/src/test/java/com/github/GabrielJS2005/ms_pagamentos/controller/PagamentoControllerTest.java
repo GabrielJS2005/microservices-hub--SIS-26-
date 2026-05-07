@@ -7,21 +7,22 @@ import com.github.GabrielJS2005.ms_pagamentos.exceptions.ResourceNotFoundExcepti
 import com.github.GabrielJS2005.ms_pagamentos.service.PagamentoService;
 import com.github.GabrielJS2005.ms_pagamentos.tests.Factory;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.math.BigDecimal;
 import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*; // IMPORTANTE: Agrupa get, post, put, delete
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @WebMvcTest(PagamentoController.class)
 public class PagamentoControllerTest {
@@ -108,31 +109,31 @@ public class PagamentoControllerTest {
 
     }
 
-//    @Test
-//    void createPagamentoShouldReturn201WhenValid() throws Exception {
-//
-//        PagamentoDTO requestDTO = new PagamentoDTO(Factory.createPagamentoSemId());
-//        // Bean objectMapper para converter JAVA para JSON
-//        String jsonRequestBody = objectMapper.writeValueAsString(requestDTO);
-//        PagamentoDTO responseDTO = new PagamentoDTO(pagamento);
-//
-//        Mockito.when(pagamentoService.savePagamento(any(PagamentoDTO.class))).thenReturn(responseDTO);
-//
-//        mockMvc.perform(post("/pagamentos")
-//                        .contentType(MediaType.APPLICATION_JSON) // request Content-Type
-//                        .accept(MediaType.APPLICATION_JSON)      // request Accept
-//                        .content(jsonRequestBody))               // request body
-//                .andDo(print())
-//                .andExpect(status().isCreated())
-//                .andExpect(header().exists("Location"))
-//                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) // response
-//                .andExpect(jsonPath("$.id").value(pagamento.getId()))
-//                .andExpect(jsonPath("$.status").value(pagamento.getStatus().name()))
-//                .andExpect(jsonPath("$.valor").value(pagamento.getValor().doubleValue()))
-//                .andExpect(jsonPath("$.pedidoId").value(pagamento.getPedidoId()));
-//
-//        Mockito.verify(pagamentoService).savePagamento(any(PagamentoDTO.class));
-//        Mockito.verifyNoMoreInteractions(pagamentoService);
-//    }
+    @Test
+    void createPagamentoShouldReturn201WhenValid() throws Exception {
 
-}// class
+        PagamentoDTO requestDTO = new PagamentoDTO(Factory.createPagamentoSemId());
+        // Bean objectMapper para converter JAVA para JSON
+        String jsonRequestBody = objectMapper.writeValueAsString(requestDTO);
+        PagamentoDTO responseDTO = new PagamentoDTO(pagamento);
+
+        Mockito.when(pagamentoService.savePagamento(any(PagamentoDTO.class))).thenReturn(responseDTO);
+
+        mockMvc.perform(post("/pagamentos")
+                        .contentType(MediaType.APPLICATION_JSON) // request Content-Type
+                        .accept(MediaType.APPLICATION_JSON)      // request Accept
+                        .content(jsonRequestBody))               // request body
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(header().exists("Location"))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) // response
+                .andExpect(jsonPath("$.id").value(pagamento.getId()))
+                .andExpect(jsonPath("$.status").value(pagamento.getStatus().name()))
+                .andExpect(jsonPath("$.valor").value(pagamento.getValor().doubleValue()))
+                .andExpect(jsonPath("$.pedidoId").value(pagamento.getPedidoId()));
+
+        Mockito.verify(pagamentoService).savePagamento(any(PagamentoDTO.class));
+        Mockito.verifyNoMoreInteractions(pagamentoService);
+    }
+
+} //class
